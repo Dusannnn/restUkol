@@ -53,8 +53,8 @@ public class TopicController {
 //        System.out.println("Deleting comment with id: " + commentId);
 //    }
 //
-    @RequestMapping(method = RequestMethod.GET, value = "/{topicId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public List<CommentVO> getAllComments(){
+    @RequestMapping(method = RequestMethod.GET, value = "/{topicId}/comment", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public List<CommentVO> getAllComments(@PathVariable("topicId") long topicId){
         return commentService.getAllComments();
     }
 
