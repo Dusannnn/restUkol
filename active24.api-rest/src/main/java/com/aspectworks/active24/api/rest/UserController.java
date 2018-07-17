@@ -11,6 +11,8 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+    List<UserVO> users = new ArrayList<>();
+
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createUser(@RequestBody UserVO user){
         System.out.println("Creating new user: " + user);
@@ -23,7 +25,6 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<UserVO> getAllUsers(){
-        List<UserVO> users = new ArrayList<>();
         UserVO userVO = new UserVO();
         userVO.setUsername("user1");
         userVO.setFirstName("Tomas");
