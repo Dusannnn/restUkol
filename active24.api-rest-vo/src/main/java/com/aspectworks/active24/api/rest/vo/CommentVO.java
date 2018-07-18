@@ -1,18 +1,25 @@
 package com.aspectworks.active24.api.rest.vo;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class CommentVO {
 
-    private UserVO user;
+    private String user;
     private long commentId;
     private String content;
 
-    public UserVO getUser() {
+    public CommentVO() {
+        this.dateCreated = new Date();
+    }
+
+    private Date dateCreated;
+
+    public String getUser() {
         return user;
     }
 
-    public void setUser(UserVO user) {
+    public void setUser(String user) {
         this.user = user;
     }
 

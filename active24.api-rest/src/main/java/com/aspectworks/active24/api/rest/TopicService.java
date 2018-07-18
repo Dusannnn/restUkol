@@ -12,14 +12,20 @@ public interface TopicService {
 
     void deleteTopic(long topicId);
 
-    List<TopicEntity> getAllTopics();
-
+    List<TopicEntity> getAllTopics(String text, String sortBy, String sortType);
 
     void createComment(long topicId, CommentVO comment);
 
     List<CommentVO> getAllComments(long topicId);
 
-//    void sortAscendingByName();
-//
-//    void sortDescendingByName();
+    public List<TopicEntity> searchTopicWithText(String text);
+
+    void sortByNameAsc();
+
+    void sortByNameDesc();
+
+    void sortByDateAsc();
+
+    void sortByDateDesc();
+
 }

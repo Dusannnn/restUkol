@@ -18,7 +18,7 @@ public class TopicEntity {
         this.topicId = topicVO.getTopicId();
         this.topicName = topicVO.getTopicName();
         this.content = topicVO.getContent();
-        this.dateCreated = topicVO.getDateCreated();
+        this.dateCreated = new Date();
     }
 
     public long getTopicId() {

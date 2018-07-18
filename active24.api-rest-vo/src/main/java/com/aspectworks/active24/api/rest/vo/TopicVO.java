@@ -9,6 +9,16 @@ public class TopicVO {
     private String content;
     private Date dateCreated = new Date();
 
+    public TopicVO() {
+    }
+
+    public TopicVO(TopicEntity topic) {
+        this.topicId = topic.getTopicId();
+        this.topicName = topic.getTopicName();
+        this.content = topic.getContent();
+        this.dateCreated = topic.getDateCreated();
+    }
+
     public long getTopicId() {
         return topicId;
     }
