@@ -20,9 +20,11 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public void createTopic(TopicEntity topic) {
-        topics.add(topic);
-
-    }
+        //topics.add(topic);
+        tr.save(topic);
+        }
+        //System.out.println(tr.findAll().get(0).getTopicName());
+    
 
     @Override
     public void deleteTopic(long topicId) {
