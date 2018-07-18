@@ -10,7 +10,9 @@ public class TopicEntity {
     private String topicName;
     private String content;
     private Date dateCreated = new Date();
-    private List comments = new ArrayList();
+    private List<CommentVO> comments = new ArrayList<>();
+
+    public TopicEntity(){}
 
     public TopicEntity(TopicVO topicVO) {
         this.topicId = topicVO.getTopicId();
@@ -43,7 +45,6 @@ public class TopicEntity {
         this.content = content;
     }
 
-
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -52,6 +53,13 @@ public class TopicEntity {
         this.dateCreated = dateCreated;
     }
 
+    public List<CommentVO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentVO> comments) {
+        this.comments = comments;
+    }
 
     @Override
     public boolean equals(Object o) {

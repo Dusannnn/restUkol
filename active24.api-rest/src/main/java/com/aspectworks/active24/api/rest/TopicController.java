@@ -1,6 +1,7 @@
 package com.aspectworks.active24.api.rest;
 
 import com.aspectworks.active24.api.rest.vo.CommentVO;
+import com.aspectworks.active24.api.rest.vo.TopicEntity;
 import com.aspectworks.active24.api.rest.vo.TopicVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,16 +16,14 @@ import java.util.List;
 public class TopicController {
 
     @Autowired
-    TopicService topicService;
-
-    @Autowired
-    CommentService commentService;
+    TopicServiceImpl topicService;
 
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void creatTopic(@RequestBody TopicVO topic){
         topic.setDateCreated(new Date());
-        topicService.createTopic(topic);
+        TopicEntity topicEntity = new TopicEntity(topic);
+        topicService.createTopic(topicEntity);
         System.out.println("Creating new topic: " + topic);
     }
 
@@ -35,27 +34,22 @@ public class TopicController {
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public List<TopicVO> getAllTopics(){
+    public List<TopicEntity> getAllTopics(){
         return topicService.getAllTopics();
     }
 
-
+query string pro razeni 2param, date,name ; desc or asc;
 
     @RequestMapping(method = RequestMethod.POST, value = "/{topicId}/comments", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createComment(@RequestBody CommentVO comment){
-        commentService.createComment(comment);
+    public void createComment(@RequestBody CommentVO comment,@PathVariable("topicId") long topicId){
+        topicService.createComment(topicId, comment);
         System.out.println("Creating new comment: " + comment);
     }
 
-//    @RequestMapping(method = RequestMethod.DELETE, value = "/{commentId}")
-//    public void deleteComment(@PathVariable("commentId") long commentId){
-//        commentService.deleteComment(commentId);
-//        System.out.println("Deleting comment with id: " + commentId);
-//    }
-//
-    @RequestMapping(method = RequestMethod.GET, value = "/{topicId}/comment", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{topicId}/comments", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<CommentVO> getAllComments(@PathVariable("topicId") long topicId){
-        return commentService.getAllComments();
+        return topicService.getAllComments(topicId);
     }
 
 
