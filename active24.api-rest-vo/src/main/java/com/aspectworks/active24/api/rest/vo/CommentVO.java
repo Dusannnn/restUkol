@@ -1,14 +1,23 @@
 package com.aspectworks.active24.api.rest.vo;
 
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
 public class CommentVO {
 
     private String user;
     private long commentId;
     private String content;
 
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    private long id;
     public CommentVO() {
         this.dateCreated = new Date();
     }

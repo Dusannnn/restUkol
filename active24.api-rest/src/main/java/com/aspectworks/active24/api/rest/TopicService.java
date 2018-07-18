@@ -2,7 +2,6 @@ package com.aspectworks.active24.api.rest;
 
 import com.aspectworks.active24.api.rest.vo.CommentVO;
 import com.aspectworks.active24.api.rest.vo.TopicEntity;
-import com.aspectworks.active24.api.rest.vo.TopicVO;
 
 import java.util.List;
 

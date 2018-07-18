@@ -2,7 +2,7 @@ package com.aspectworks.active24.api.rest;
 
 import com.aspectworks.active24.api.rest.vo.CommentVO;
 import com.aspectworks.active24.api.rest.vo.TopicEntity;
-import com.aspectworks.active24.api.rest.vo.TopicVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,6 +15,8 @@ public class TopicServiceImpl implements TopicService {
 
     List<TopicEntity> topics = new ArrayList<>();
 
+    @Autowired
+    TopicRepository tr;
 
     @Override
     public void createTopic(TopicEntity topic) {

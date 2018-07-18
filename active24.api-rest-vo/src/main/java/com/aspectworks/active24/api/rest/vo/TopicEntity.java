@@ -1,16 +1,23 @@
 package com.aspectworks.active24.api.rest.vo;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class TopicEntity {
     private long topicId;
     private String topicName;
     private String content;
     private Date dateCreated = new Date();
+    @OneToMany
     private List<CommentVO> comments = new ArrayList<>();
+
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    private long id;
 
     public TopicEntity(){}
 
