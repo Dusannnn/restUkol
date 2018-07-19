@@ -1,10 +1,12 @@
 package com.aspectworks.active24.api.rest;
 
+import com.aspectworks.active24.api.rest.vo.UserEntity;
 import com.aspectworks.active24.api.rest.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 @RestController
@@ -16,7 +18,8 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createUser(@RequestBody UserVO user){
-        userService.createUser(user);
+        UserEntity userEntity = new UserEntity(user);
+        userService.createUser(userEntity);
         System.out.println("Creating new user: " + user);
     }
 
@@ -27,7 +30,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public List<UserVO> getAllUsers(){
+    public List<UserEntity> getAllUsers(){
         return userService.getAllUsers();
     }
 }

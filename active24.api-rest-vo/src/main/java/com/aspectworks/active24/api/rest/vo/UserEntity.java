@@ -1,17 +1,27 @@
 package com.aspectworks.active24.api.rest.vo;
 
-public class UserVO {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class UserEntity {
 
     private String username;
     private String firstName;
     private String surname;
 
-    public UserVO(){}
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    private long id;
+    public UserEntity() {
+    }
 
-    public UserVO(UserEntity usrEnt) {
-        this.username = usrEnt.getUsername();
-        this.firstName = usrEnt.getFirstName();
-        this.surname = usrEnt.getSurname();
+    public UserEntity(UserVO usrVO) {
+        this.username = usrVO.getUsername();
+        this.firstName = usrVO.getFirstName();
+        this.surname = usrVO.getSurname();
     }
 
     public String getUsername() {
@@ -43,7 +53,7 @@ public class UserVO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserVO userVO = (UserVO) o;
+        UserEntity userVO = (UserEntity) o;
 
         if (username != null ? !username.equals(userVO.username) : userVO.username != null) return false;
         if (firstName != null ? !firstName.equals(userVO.firstName) : userVO.firstName != null) return false;

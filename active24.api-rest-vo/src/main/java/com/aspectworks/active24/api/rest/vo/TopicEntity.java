@@ -12,7 +12,7 @@ public class TopicEntity {
     private String topicName;
     private String content;
     private Date dateCreated = new Date();
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<CommentVO> comments = new ArrayList<>();
 
     @GeneratedValue(strategy = GenerationType.AUTO)

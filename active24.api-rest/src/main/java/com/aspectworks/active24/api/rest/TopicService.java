@@ -17,7 +17,7 @@ public interface TopicService {
 
     List<CommentVO> getAllComments(long topicId);
 
-    public List<TopicEntity> searchTopicWithText(String text);
+    //public List<TopicEntity> searchTopicWithText(String text);
 
     void sortByNameAsc();
 
