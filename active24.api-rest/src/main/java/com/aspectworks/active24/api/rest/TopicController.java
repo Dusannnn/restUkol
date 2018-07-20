@@ -2,6 +2,7 @@ package com.aspectworks.active24.api.rest;
 
 import com.aspectworks.active24.api.rest.vo.CommentVO;
 import com.aspectworks.active24.api.rest.vo.TopicVO;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/topics")
-
+@Api
 public class TopicController {
 
     @Autowired
