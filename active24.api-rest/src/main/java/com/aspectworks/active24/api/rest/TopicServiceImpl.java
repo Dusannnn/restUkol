@@ -1,7 +1,9 @@
 package com.aspectworks.active24.api.rest;
 
+import com.aspectworks.active24.api.rest.vo.CommentEntity;
 import com.aspectworks.active24.api.rest.vo.CommentVO;
 import com.aspectworks.active24.api.rest.vo.TopicEntity;
+import com.aspectworks.active24.api.rest.vo.TopicVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,10 @@ public class TopicServiceImpl implements TopicService {
     TopicRepository topicRepository;
 
     @Override
-    public void createTopic(TopicEntity topic) {
+    public void createTopic(TopicVO topic) {
         //topics.add(topic);
-        topicRepository.save(topic);
+        TopicEntity topicEntity = new TopicEntity(topic);
+        topicRepository.save(topicEntity);
         }
         //System.out.println(tr.findAll().get(0).getTopicName());
 
@@ -110,17 +113,22 @@ public class TopicServiceImpl implements TopicService {
 //            }
 //        });
 //
-        topicRepository.findByTopicId(topicId).getComments().add(comment);
+        CommentEntity commentEntity = new CommentEntity(comment);
+        TopicEntity entity = topicRepository.findByTopicId(topicId);
+        entity.getComments().add(commentEntity);
+        topicRepository.save(entity);
+        System.out.println("Adding comment " +comment.getCommentId() + "to topic"+ topicId);
     }
 
 
     @Override
-    public List<CommentVO> getAllComments(long topicId) {
+    public List<CommentEntity> getAllComments(long topicId) {
 //        for (TopicEntity topicEntity : topics)
 //            if (topicEntity.getTopicId() == (topicId))
 //                return topicEntity.getComments();
 //        return new ArrayList<>();
-//
+
+        System.out.println("Getting comments from topic:" + topicId);
         return topicRepository.findByTopicId(topicId).getComments();
     }
 

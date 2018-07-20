@@ -12,8 +12,9 @@ public class TopicEntity {
     private String topicName;
     private String content;
     private Date dateCreated = new Date();
+
     @OneToMany(cascade = CascadeType.ALL)
-    private List<CommentVO> comments = new ArrayList<>();
+    private List<CommentEntity> comments = new ArrayList<>();
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
@@ -60,11 +61,11 @@ public class TopicEntity {
         this.dateCreated = dateCreated;
     }
 
-    public List<CommentVO> getComments() {
+    public List<CommentEntity> getComments() {
         return comments;
     }
 
-    public void setComments(List<CommentVO> comments) {
+    public void setComments(List<CommentEntity> comments) {
         this.comments = comments;
     }
 

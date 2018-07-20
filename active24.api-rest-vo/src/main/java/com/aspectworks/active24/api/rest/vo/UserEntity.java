@@ -15,6 +15,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private long id;
+
     public UserEntity() {
     }
 

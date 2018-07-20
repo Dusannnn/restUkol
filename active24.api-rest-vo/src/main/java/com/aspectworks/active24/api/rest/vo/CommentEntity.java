@@ -1,27 +1,36 @@
 package com.aspectworks.active24.api.rest.vo;
 
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 import java.util.Objects;
 
-public class CommentVO {
+@Entity
+public class CommentEntity {
 
     private String user;
     private long commentId;
     private String content;
-
-    public CommentVO(CommentEntity commentEntity) {
-        this.user = commentEntity.getUser();
-        this.commentId = commentEntity.getCommentId();
-        this.content = commentEntity.getContent();
-        this.dateCreated = new Date();
-    }
-
-    public CommentVO() {
-        this.dateCreated = new Date();
-    }
-
     private Date dateCreated;
+
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    private long id;
+
+    public CommentEntity() {
+        this.dateCreated = new Date();
+    }
+
+
+    public CommentEntity(CommentVO commentVO) {
+        this.user = commentVO.getUser();
+        this.commentId = commentVO.getCommentId();
+        this.content = commentVO.getContent();
+        this.dateCreated = new Date();
+    }
 
     public String getUser() {
         return user;
@@ -51,10 +60,10 @@ public class CommentVO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CommentVO commentVO = (CommentVO) o;
-        return Objects.equals(user, commentVO.user) &&
-                Objects.equals(commentId, commentVO.commentId) &&
-                Objects.equals(content, commentVO.content);
+        CommentEntity commentEntity = (CommentEntity) o;
+        return Objects.equals(user, commentEntity.user) &&
+                Objects.equals(commentId, commentEntity.commentId) &&
+                Objects.equals(content, commentEntity.content);
     }
 
     @Override
