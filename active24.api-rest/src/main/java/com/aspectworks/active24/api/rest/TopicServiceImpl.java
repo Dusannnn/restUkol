@@ -4,6 +4,8 @@ import com.aspectworks.active24.api.rest.vo.CommentEntity;
 import com.aspectworks.active24.api.rest.vo.CommentVO;
 import com.aspectworks.active24.api.rest.vo.TopicEntity;
 import com.aspectworks.active24.api.rest.vo.TopicVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,10 @@ import java.util.List;
 
 @Service
 public class TopicServiceImpl implements TopicService {
+
+
+    final Logger logger = LoggerFactory.getLogger(TopicServiceImpl.class);
+
 
 
     List<TopicEntity> topics = new ArrayList<>();
@@ -36,7 +42,8 @@ public class TopicServiceImpl implements TopicService {
 //            }
 //        }
         topicRepository.deleteByTopicId(topicId);
-        System.out.println("Entity succsessfully deleted" + topicId);
+        logger.info("Entity succsessfully deleted" + topicId);
+        //System.out.println("Entity succsessfully deleted" + topicId);
     }
 
     public List<TopicEntity> getAllTopics(String text, String sortBy, String sortType) {
@@ -80,28 +87,28 @@ public class TopicServiceImpl implements TopicService {
     public void sortByNameAsc() {
         //Collections.sort(topics, (TopicEntity e1, TopicEntity e2) -> e1.getTopicName().compareTo(e2.getTopicName()));
         topicRepository.findAll().sort((TopicEntity e1, TopicEntity e2) -> e1.getTopicName().compareTo(e2.getTopicName()));
-        System.out.println("sorting by name asc");
+        logger.info("sorting by name asc");
     }
 
     @Override
     public void sortByNameDesc() {
         //Collections.sort(topics, (TopicEntity e1, TopicEntity e2) -> e2.getTopicName().compareTo(e1.getTopicName()));
         topicRepository.findAll().sort((TopicEntity e1, TopicEntity e2) -> e2.getTopicName().compareTo(e1.getTopicName()));
-        System.out.println("sorting by name desc");
+        logger.info("sorting by name desc");
     }
 
     @Override
     public void sortByDateAsc() {
         //Collections.sort(topics, (TopicEntity e1, TopicEntity e2) -> e1.getDateCreated().compareTo(e2.getDateCreated()));
         topicRepository.findAll().sort((TopicEntity e1, TopicEntity e2) -> e1.getDateCreated().compareTo(e2.getDateCreated()));
-        System.out.println("sorting by date asc");
+        logger.info("sorting by date asc");
     }
 
     @Override
     public void sortByDateDesc() {
         //Collections.sort(topics, (TopicEntity e1, TopicEntity e2) -> e2.getDateCreated().compareTo(e1.getDateCreated()));
         topicRepository.findAll().sort((TopicEntity e1, TopicEntity e2) -> e2.getDateCreated().compareTo(e1.getDateCreated()));
-        System.out.println("sorting by date desc");
+        logger.info("sorting by date desc");
     }
 
 
@@ -117,7 +124,7 @@ public class TopicServiceImpl implements TopicService {
         TopicEntity entity = topicRepository.findByTopicId(topicId);
         entity.getComments().add(commentEntity);
         topicRepository.save(entity);
-        System.out.println("Adding comment " +comment.getCommentId() + "to topic"+ topicId);
+        logger.info("Adding comment " +comment.getCommentId() + "to topic"+ topicId);
     }
 
 
@@ -128,7 +135,7 @@ public class TopicServiceImpl implements TopicService {
 //                return topicEntity.getComments();
 //        return new ArrayList<>();
 
-        System.out.println("Getting comments from topic:" + topicId);
+        logger.info("Getting comments from topic:" + topicId);
         return topicRepository.findByTopicId(topicId).getComments();
     }
 

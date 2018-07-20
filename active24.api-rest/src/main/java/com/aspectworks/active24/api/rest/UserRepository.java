@@ -9,4 +9,6 @@ import javax.transaction.Transactional;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     void deleteByUsername(String name);
+
+    UserEntity findByUsername(String username);
 }

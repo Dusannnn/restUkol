@@ -1,36 +1,56 @@
 package com.aspectworks.active24.api.rest;
 
+import ch.qos.logback.classic.Logger;
 import com.aspectworks.active24.api.rest.vo.CommentVO;
 import com.aspectworks.active24.api.rest.vo.TopicVO;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@PropertySource(value={"file:${restapi.config.dir}/restapi.properties"})
 @RestController
 @RequestMapping("/topics")
-@Api
+@Api(value = "/topics")
 public class TopicController {
 
     @Autowired
     TopicServiceImpl topicService;
 
+    @Value("${superproperty}")
+    private String superProperty;
 
+    final Logger logger = (Logger) LoggerFactory.getLogger(TopicController.class);
+
+
+
+
+    @ApiOperation(value = "Creating new topic")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void creatTopic(@RequestBody TopicVO topic){
         topicService.createTopic(topic);
-        System.out.println("Creating new topic: " + topic);
+        logger.info(superProperty);
+        logger.debug("Creating new topic: " + topic);
+        //System.out.println("Creating new topic: " + topic);
     }
 
+    @ApiOperation(value = "Deleting specific topic based on TopicID")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{topicId}")
     public void deleteTopic(@PathVariable("topicId") long topicId){
         topicService.deleteTopic(topicId);
-        System.out.println("Deleting topic with id: " + topicId);
+        logger.debug("Deleting topic with id: " + topicId);
+        //System.out.println("Deleting topic with id: " + topicId);
     }
 
+    @ApiOperation(value = "Returning list of topics")
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<TopicVO> getAllTopics(@RequestParam (value = "text", required = false) String text, @RequestParam (value = "sortBy", required = false) String sortBy, @RequestParam (value = "sortType", required = false) String sortType){
         return topicService.getAllTopics(text, sortBy, sortType).stream().map(topic -> new TopicVO(topic)).collect(Collectors.toList());
@@ -38,13 +58,15 @@ public class TopicController {
 
 //query string pro razeni 2param, date,name ; desc or asc
 
+    @ApiOperation(value = "creating new comment for specific topic based on TopicID")
     @RequestMapping(method = RequestMethod.POST, value = "/{topicId}/comments", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createComment(@RequestBody CommentVO comment,@PathVariable("topicId") long topicId){
         topicService.createComment(topicId, comment);
-        System.out.println("Creating new comment: " + comment);
+        logger.info("Creating new comment: " + comment);
+        //        System.out.println("Creating new comment: " + comment);
     }
 
-
+    @ApiOperation(value = "Returning list of commnets")
     @RequestMapping(method = RequestMethod.GET, value = "/{topicId}/comments", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<CommentVO> getAllComments(@PathVariable("topicId") long topicId){
         return topicService.getAllComments(topicId).stream().map(comment -> new CommentVO(comment)).collect(Collectors.toList());

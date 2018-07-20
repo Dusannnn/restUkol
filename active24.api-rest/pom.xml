@@ -39,44 +39,71 @@
                     model converter -->
         <dependency>
             <groupId>io.swagger</groupId>
-            <artifactId>swagger-hibernate-validations</artifactId>
-            <version>1.5.6</version>
+            <artifactId>swagger-core</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
         </dependency>
         <!--Others END-->
     </dependencies>
 
     <build>
         <plugins>
-        <plugin>
-            <groupId>com.github.kongchen</groupId>
-            <artifactId>swagger-maven-plugin</artifactId>
-            <version>3.1.1</version>
-            <configuration>
-                <apiSources>
-                    <apiSource>
-                        <springmvc>false</springmvc>
-                        <locations>com.aspectworks.active24.api.rest.TopicController</locations>
-                        <schemes>http,https</schemes>
-                        <info>
-                            <title>Swagger Maven Plugin Sample</title>
-                            <version>v1</version>
-                            <description>This is a sample for swagger-maven-plugin</description>
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>true</springmvc>
+                            <locations>
+                                com.aspectworks.active24.api.rest
+                            </locations>
+                            <schemes>http,https</schemes>
+                            <info>
+                                <title>Swagger Maven Plugin Sample</title>
+                                <version>v1</version>
+                                <description>This is a sample for swagger-maven-plugin</description>
                             </info>
-                        <outputPath>C:\Users/Dusan.Petren/Desktop/restUkol/generated/document.html</outputPath>
-                        <templatePath>C:\Users/Dusan.Petren/Desktop/restUkol/templates/strapdown.html.hbs</templatePath>
-                        <swaggerDirectory>generated/swagger-ui</swaggerDirectory>
+                            <outputPath>C:\Users/Dusan.Petren/Desktop/restUkol/generated/document.html</outputPath>
+                            <templatePath>C:\Users/Dusan.Petren/Desktop/restUkol/templates/strapdown.html.hbs
+                            </templatePath>
+                            <swaggerDirectory>generated/swagger-ui</swaggerDirectory>
                         </apiSource>
-                </apiSources>
-            </configuration>
-            <executions>
-                <execution>
-                    <phase>compile</phase>
-                    <goals>
-                        <goal>generate</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
