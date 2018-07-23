@@ -1,10 +1,18 @@
-<!--<cache name="userCache"-->
-       <!--maxEntriesLocalHeap="60"-->
-       <!--eternal="false"-->
-       <!--timeToIdleSeconds="5"-->
-       <!--timeToLiveSeconds="10"-->
-       <!--copyOnRead="true"-->
-       <!--copyOnWrite="true">-->
-    <!--<persistence strategy="none"/>-->
-    <!--<copyStrategy class="com.company.ehcache.MyCopyStrategy"/>-->
-<!--</cache>-->
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
+         updateCheck="true"
+         monitoring="autodetect"
+         dynamicConfig="true">
+
+    <cache name="userCache"
+           maxElementsInMemory="100"
+           eternal="false"
+           overflowToDisk="false"
+           timeToLiveSeconds="300"
+           timeToIdleSeconds="0"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+    </cache>
+
+</ehcache>

@@ -5,20 +5,15 @@ import com.aspectworks.active24.api.rest.vo.CommentVO;
 import com.aspectworks.active24.api.rest.vo.TopicVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@PropertySource(value={"file:${restapi.config.dir}/restapi.properties"})
 @RestController
 @RequestMapping("/topics")
 @Api(value = "/topics")
@@ -27,20 +22,20 @@ public class TopicController {
     @Autowired
     TopicServiceImpl topicService;
 
-//    @Autowired
-//    CacheManager cacheManager;
+    @Autowired
+    UserRepository userRepository;
+
 
     final Logger logger = (Logger) LoggerFactory.getLogger(TopicController.class);
 
 
 
-    @Cacheable(value = "userCache", key = "rest.limit.user.global", sync = true)
+    @Cacheable("userCache")
     @ApiOperation(value = "Creating new topic")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void creatTopic(@RequestBody TopicVO topic){
+    public void createTopic(@RequestBody TopicVO topic){
         topicService.createTopic(topic);
         logger.debug("Creating new topic: " + topic);
-       // System.out.println((cacheManager.getCacheNames()));
     }
 
     @ApiOperation(value = "Deleting specific topic based on TopicID")
@@ -70,6 +65,10 @@ public class TopicController {
     public List<CommentVO> getAllComments(@PathVariable("topicId") long topicId){
         return topicService.getAllComments(topicId).stream().map(comment -> new CommentVO(comment)).collect(Collectors.toList());
     }
+
+
+
+
 
 
 
