@@ -19,7 +19,6 @@ public class TopicServiceImpl implements TopicService {
     final Logger logger = LoggerFactory.getLogger(TopicServiceImpl.class);
 
 
-
     List<TopicEntity> topics = new ArrayList<>();
 
     @Autowired
@@ -30,8 +29,8 @@ public class TopicServiceImpl implements TopicService {
         //topics.add(topic);
         TopicEntity topicEntity = new TopicEntity(topic);
         topicRepository.save(topicEntity);
-        }
-        //System.out.println(tr.findAll().get(0).getTopicName());
+    }
+    //System.out.println(tr.findAll().get(0).getTopicName());
 
 
     @Override
@@ -82,7 +81,6 @@ public class TopicServiceImpl implements TopicService {
     }
 
 
-
     @Override
     public void sortByNameAsc() {
         //Collections.sort(topics, (TopicEntity e1, TopicEntity e2) -> e1.getTopicName().compareTo(e2.getTopicName()));
@@ -124,7 +122,7 @@ public class TopicServiceImpl implements TopicService {
         TopicEntity entity = topicRepository.findByTopicId(topicId);
         entity.getComments().add(commentEntity);
         topicRepository.save(entity);
-        logger.info("Adding comment " +comment.getCommentId() + "to topic"+ topicId);
+        logger.info("Adding comment " + comment.getCommentId() + "to topic" + topicId);
     }
 
 

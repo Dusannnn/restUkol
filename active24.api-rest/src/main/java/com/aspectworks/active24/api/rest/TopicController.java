@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -25,21 +27,20 @@ public class TopicController {
     @Autowired
     TopicServiceImpl topicService;
 
-    @Value("${superproperty}")
-    private String superProperty;
+//    @Autowired
+//    CacheManager cacheManager;
 
     final Logger logger = (Logger) LoggerFactory.getLogger(TopicController.class);
 
 
 
-
+    @Cacheable(value = "userCache", key = "rest.limit.user.global", sync = true)
     @ApiOperation(value = "Creating new topic")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void creatTopic(@RequestBody TopicVO topic){
         topicService.createTopic(topic);
-        logger.info(superProperty);
         logger.debug("Creating new topic: " + topic);
-        //System.out.println("Creating new topic: " + topic);
+       // System.out.println((cacheManager.getCacheNames()));
     }
 
     @ApiOperation(value = "Deleting specific topic based on TopicID")
@@ -47,7 +48,6 @@ public class TopicController {
     public void deleteTopic(@PathVariable("topicId") long topicId){
         topicService.deleteTopic(topicId);
         logger.debug("Deleting topic with id: " + topicId);
-        //System.out.println("Deleting topic with id: " + topicId);
     }
 
     @ApiOperation(value = "Returning list of topics")
@@ -63,7 +63,6 @@ public class TopicController {
     public void createComment(@RequestBody CommentVO comment,@PathVariable("topicId") long topicId){
         topicService.createComment(topicId, comment);
         logger.info("Creating new comment: " + comment);
-        //        System.out.println("Creating new comment: " + comment);
     }
 
     @ApiOperation(value = "Returning list of commnets")
