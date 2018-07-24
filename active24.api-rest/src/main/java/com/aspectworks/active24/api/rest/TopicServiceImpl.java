@@ -7,12 +7,14 @@ import com.aspectworks.active24.api.rest.vo.TopicVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Cacheable
 public class TopicServiceImpl implements TopicService {
 
 
@@ -25,26 +27,25 @@ public class TopicServiceImpl implements TopicService {
     TopicRepository topicRepository;
 
     @Override
-    public void createTopic(TopicVO topic) {
-        //topics.add(topic);
+    public void createTopic(TopicVO topic){
+        logger.info("Creating from Cache");
         TopicEntity topicEntity = new TopicEntity(topic);
         topicRepository.save(topicEntity);
     }
-    //System.out.println(tr.findAll().get(0).getTopicName());
 
 
     @Override
     public void deleteTopic(long topicId) {
-//        for (TopicEntity topic : topics) {
-//            if (topic.getTopicId() == topicId) {
-//                topics.remove(topic);
-//            }
-//        }
         topicRepository.deleteByTopicId(topicId);
         logger.info("Entity succsessfully deleted" + topicId);
-        //System.out.println("Entity succsessfully deleted" + topicId);
     }
 
+    @Cacheable(value = {"userCache"})
+    public String getTopicById(long Id){
+        return topicRepository.findByTopicId(Id).getTopicName();
+    }
+
+    @Override
     public List<TopicEntity> getAllTopics(String text, String sortBy, String sortType) {
         if (sortBy == null) {
             sortBy = "name";
