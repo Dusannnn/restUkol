@@ -1,7 +1,6 @@
 package com.aspectworks.active24.api.rest;
 
 import com.aspectworks.active24.api.rest.vo.UserEntity;
-import com.aspectworks.active24.api.rest.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

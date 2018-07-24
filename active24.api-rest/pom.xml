@@ -47,38 +47,23 @@
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
         </dependency>
-        <!-- ehcache and JSR dependencies-->
-
         <dependency>
-
-            <groupId>org.ehcache</groupId>
-
-            <artifactId>ehcache</artifactId>
-
-            <version>RELEASE</version>
-
-        </dependency>
-
-        <dependency>
-
-            <groupId>javax.cache</groupId>
-
-            <artifactId>cache-api</artifactId>
-
-        </dependency>
-
-        <!-- spring boot cache starter-->
-
-        <dependency>
-
             <groupId>org.springframework.boot</groupId>
-
-            <artifactId>spring-boot-starter-cache</artifactId>
-
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <version>2.0.3.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.5.2</version>
+        </dependency>
+
         <!--Others END-->
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

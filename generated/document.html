@@ -36,7 +36,7 @@ This is a sample for swagger-maven-plugin
 
 ### GET
 
-<a id="getTopicById">Returning list of topics</a>
+<a id="getAllTopics">Returning list of topics</a>
 
 
 
@@ -65,14 +65,40 @@ This is a sample for swagger-maven-plugin
 
 
 <tr>
-    <th>Id</th>
+    <th>text</th>
     <td>query</td>
-    <td>yes</td>
+    <td>no</td>
     <td></td>
     <td> - </td>
 
     
-            <td>integer (int64)</td>
+            <td>string </td>
+    
+
+</tr>
+
+<tr>
+    <th>sortBy</th>
+    <td>query</td>
+    <td>no</td>
+    <td></td>
+    <td> - </td>
+
+    
+            <td>string </td>
+    
+
+</tr>
+
+<tr>
+    <th>sortType</th>
+    <td>query</td>
+    <td>no</td>
+    <td></td>
+    <td> - </td>
+
+    
+            <td>string </td>
     
 
 </tr>
@@ -89,7 +115,7 @@ This is a sample for swagger-maven-plugin
 
 | Status Code | Reason      | Response Model |
 |-------------|-------------|----------------|
-| 200    | successful operation | |
+| 200    | successful operation | Array[<a href=""></a>]|
 
 
 

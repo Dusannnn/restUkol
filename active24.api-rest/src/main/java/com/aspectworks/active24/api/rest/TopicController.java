@@ -7,7 +7,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +20,6 @@ public class TopicController {
 
     @Autowired
     TopicServiceImpl topicService;
-
-    @Autowired
-    UserRepository userRepository;
-
 
     final Logger logger = (Logger) LoggerFactory.getLogger(TopicController.class);
 
@@ -46,10 +41,8 @@ public class TopicController {
 
     @ApiOperation(value = "Returning list of topics")
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-//    public List<TopicVO> getAllTopics(@RequestParam (value = "text", required = false) String text, @RequestParam (value = "sortBy", required = false) String sortBy, @RequestParam (value = "sortType", required = false) String sortType){
-//        return topicService.getAllTopics(text, sortBy, sortType).stream().map(topic -> new TopicVO(topic)).collect(Collectors.toList());
-    public String getTopicById(@RequestParam(value = "Id") Long Id){
-    return topicService.getTopicById(Id);
+    public List<TopicVO> getAllTopics(@RequestParam (value = "text", required = false) String text, @RequestParam (value = "sortBy", required = false) String sortBy, @RequestParam (value = "sortType", required = false) String sortType){
+        return topicService.getAllTopics(text, sortBy, sortType).stream().map(topic -> new TopicVO(topic)).collect(Collectors.toList());
     }
 
 

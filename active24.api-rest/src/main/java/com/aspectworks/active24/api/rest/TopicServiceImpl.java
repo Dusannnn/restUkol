@@ -10,27 +10,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Cacheable
 public class TopicServiceImpl implements TopicService {
 
 
-    final Logger logger = LoggerFactory.getLogger(TopicServiceImpl.class);
+    final Logger logger = (Logger) LoggerFactory.getLogger(TopicServiceImpl.class);
 
 
-    List<TopicEntity> topics = new ArrayList<>();
 
     @Autowired
     TopicRepository topicRepository;
 
+
     @Override
     public void createTopic(TopicVO topic){
-        logger.info("Creating from Cache");
         TopicEntity topicEntity = new TopicEntity(topic);
         topicRepository.save(topicEntity);
+        logger.debug("Creating new topic: ");
     }
 
 
@@ -40,12 +38,8 @@ public class TopicServiceImpl implements TopicService {
         logger.info("Entity succsessfully deleted" + topicId);
     }
 
-    @Cacheable(value = {"userCache"})
-    public String getTopicById(long Id){
-        return topicRepository.findByTopicId(Id).getTopicName();
-    }
-
     @Override
+    @Cacheable("topicsSearch")
     public List<TopicEntity> getAllTopics(String text, String sortBy, String sortType) {
         if (sortBy == null) {
             sortBy = "name";
@@ -73,6 +67,7 @@ public class TopicServiceImpl implements TopicService {
         }
 
         if (text == null) {
+            System.out.println("From Database");
             return topicRepository.findAll();
         } else {
             return topicRepository.findAllByContentContainingIgnoreCaseOrTopicNameContainingIgnoreCase(text, text);
