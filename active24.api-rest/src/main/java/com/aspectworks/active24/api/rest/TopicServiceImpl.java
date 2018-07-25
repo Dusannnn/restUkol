@@ -7,6 +7,7 @@ import com.aspectworks.active24.api.rest.vo.TopicVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,6 @@ public class TopicServiceImpl implements TopicService {
     public void createTopic(TopicVO topic){
         TopicEntity topicEntity = new TopicEntity(topic);
         topicRepository.save(topicEntity);
-        logger.debug("Creating new topic: ");
     }
 
 
@@ -39,7 +39,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    @Cacheable("topicsSearch")
+    @CacheEvict(value = "basicCache")
     public List<TopicEntity> getAllTopics(String text, String sortBy, String sortType) {
         if (sortBy == null) {
             sortBy = "name";
@@ -71,8 +71,6 @@ public class TopicServiceImpl implements TopicService {
             return topicRepository.findAll();
         } else {
             return topicRepository.findAllByContentContainingIgnoreCaseOrTopicNameContainingIgnoreCase(text, text);
-
-
         }
     }
 
@@ -108,12 +106,6 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public void createComment(long topicId, CommentVO comment) {
-//        topics.forEach(topic -> {
-//            if (topic.getTopicId() == topicId) {
-//                topic.getComments().add(comment);
-//            }
-//        });
-//
         CommentEntity commentEntity = new CommentEntity(comment);
         TopicEntity entity = topicRepository.findByTopicId(topicId);
         entity.getComments().add(commentEntity);
@@ -124,27 +116,9 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public List<CommentEntity> getAllComments(long topicId) {
-//        for (TopicEntity topicEntity : topics)
-//            if (topicEntity.getTopicId() == (topicId))
-//                return topicEntity.getComments();
-//        return new ArrayList<>();
-
         logger.info("Getting comments from topic:" + topicId);
         return topicRepository.findByTopicId(topicId).getComments();
     }
 
-//    @Override
-//    public List<TopicEntity> searchTopicWithText(String text) {
-////    List<TopicEntity> result = new ArrayList<>();
-////        for (TopicEntity tpc : topics){
-////            if (tpc.getContent().toLowerCase().contains(text.toLowerCase()) || tpc.getTopicName().toLowerCase().contains(text.toLowerCase())){
-////                result.add(tpc);
-////            }
-////        }
-////        return result;
-//
-//        return null;
-//
-//    }
 }
 

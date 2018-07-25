@@ -1,6 +1,8 @@
 package com.aspectworks.active24;
 
 
+import com.aspectworks.active24.api.rest.RequestLimit;
+import com.aspectworks.active24.api.rest.RequestLimitImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.slf4j.*;
@@ -14,5 +16,8 @@ public class Application {
 
         SpringApplication.run(Application.class, args);
         logger.info("application started");
+
+        RequestLimitImpl requestLimit = new RequestLimitImpl();
+        requestLimit.assertUserRequestLimit("hah");
     }
 }
