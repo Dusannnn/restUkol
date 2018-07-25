@@ -1,60 +1,47 @@
 package com.aspectworks.active24.api.rest;
 
 import org.ehcache.Cache;
-import org.ehcache.CacheManager;
-import org.ehcache.config.Configuration;
-import org.ehcache.xml.XmlConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
-import static org.ehcache.config.builders.CacheManagerBuilder.newCacheManager;
+@Component
+@PropertySource("classpath:application.properties")
+public class RequestLimitImpl {
 
-public class RequestLimitImpl implements RequestLimit {
+    @Autowired
+    Cache<String, Long> cache;
 
-    private static Logger logger = LoggerFactory.getLogger(RequestLimit.class);
-    private long requestCounter;
-    private long userRequestLimit = 10;
-
-
-
-public void assertUserRequestLimit(String userId){
+    private static Logger logger = LoggerFactory.getLogger(RequestLimitImpl.class);
+    private long requestCounter = 0L;
+    private long userRequestLimitGlobal = 10;
+    private long userRequestLimit = 20;
 
 
-    Configuration xmlConfig = new XmlConfiguration(RequestLimitImpl.class.getResource("/cache/ehcache.xml"));
-    try (CacheManager cacheManager = newCacheManager(xmlConfig)) {
-        cacheManager.init();
+    public void assertUserRequestLimit(String userId) {
+        if (cache.get(userId) == null) {
+            cache.put(userId, 0L);
+        }
 
-        Cache<Long, String> basicCache = cacheManager.getCache("basicCache", Long.class, String.class);
+        requestCounter = cache.get(userId);
 
-        logger.info("Putting to cache");
-        basicCache.put(1L, "FirstValue");
-
-        logger.info(basicCache.get(1L));
-
-        basicCache.put(1L, "SecondValue");
-        logger.info(basicCache.get(1L));
-
-        logger.info("Closing cache manager");
+        if (requestCounter > userRequestLimit) {
+            throw new RequestLimitExceedeException();
+        }
+        cache.put(userId, ++requestCounter);
     }
 
-    logger.info("Exiting");
-
-
-
-
-
-    // requestCounter =  cache.get requestCount;
-    requestCounter = 0;
-
-    if (requestCounter==0)requestCounter=0;
-
-    //userRequestLimit = $rest.limit.user.userId; else {userRequestLimit = rest.limit.user.global}
-
-
-    if (requestCounter > userRequestLimit) {
-        throw new RequestLimitExceedeException();
+    public void setUserRequestLimit(String userId) {
+        if (userId.equals(null)) {
+            this.userRequestLimit = userRequestLimitGlobal;
+        } else {
+            this.userRequestLimit = 5;
+        }
     }
-    requestCounter++;
 
-}
+//userRequestLimit = $rest.limit.user.userId; else {userRequestLimit = rest.limit.user.global}
+
+
 }

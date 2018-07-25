@@ -1,21 +1,18 @@
-<config
+<ehcache:config
         xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-        xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
-        xmlns='http://www.ehcache.org/v3'
-        xsi:schemaLocation="
-            http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.1.xsd
-            http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.1.xsd">
-    <persistence directory="${user.home}/cache-data"/>
+        xmlns:ehcache='http://www.ehcache.org/v3'
+        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.1.xsd">
 
-    <cache alias="basicCache">
-        <key-type>java.lang.Long</key-type>
-        <value-type>java.lang.String</value-type>
-        <expiry>
-            <ttl unit="seconds">20</ttl>
-        </expiry>
-        <resources>
-            <heap>10</heap>
-            <disk unit="GB">1</disk>
-        </resources>
-    </cache>
-</config>
+    <ehcache:cache alias="basicCache">
+        <ehcache:key-type>java.lang.String</ehcache:key-type>
+        <ehcache:value-type>java.lang.Long</ehcache:value-type>
+        <ehcache:expiry>
+            <ehcache:ttl unit="seconds">60</ehcache:ttl>
+            <!--<ehcache:tti unit="seconds">2</ehcache:tti>-->
+        </ehcache:expiry>
+        <ehcache:resources>
+            <ehcache:heap unit="entries">100</ehcache:heap>
+            <ehcache:offheap unit="MB">1</ehcache:offheap>
+        </ehcache:resources>
+    </ehcache:cache>
+</ehcache:config>

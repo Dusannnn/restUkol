@@ -7,7 +7,6 @@ import com.aspectworks.active24.api.rest.vo.TopicVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ public class TopicServiceImpl implements TopicService {
 
 
     final Logger logger = (Logger) LoggerFactory.getLogger(TopicServiceImpl.class);
-
 
 
     @Autowired
@@ -39,7 +37,6 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    @CacheEvict(value = "basicCache")
     public List<TopicEntity> getAllTopics(String text, String sortBy, String sortType) {
         if (sortBy == null) {
             sortBy = "name";
@@ -67,8 +64,9 @@ public class TopicServiceImpl implements TopicService {
         }
 
         if (text == null) {
-            System.out.println("From Database");
+            logger.info("From database");
             return topicRepository.findAll();
+
         } else {
             return topicRepository.findAllByContentContainingIgnoreCaseOrTopicNameContainingIgnoreCase(text, text);
         }
