@@ -4,44 +4,56 @@ import org.ehcache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource("classpath:application.properties")
+@PropertySource(value = {"file:${restapi.config.dir}/restapi.properties"})
 public class RequestLimitImpl {
 
     @Autowired
     Cache<String, Long> cache;
 
-    private static Logger logger = LoggerFactory.getLogger(RequestLimitImpl.class);
-    private long requestCounter = 0L;
-    private long userRequestLimitGlobal = 10;
-    private long userRequestLimit = 20;
+    @Autowired
+    private Environment env;
 
+    private static Logger logger = LoggerFactory.getLogger(RequestLimitImpl.class);
+    private long requestCounter;
+    @Value("${rest.limit.user.global}")
+    private long userRequestLimitGlobal;
+
+    private long userRequestLimit;
 
     public void assertUserRequestLimit(String userId) {
+        setUserRequestLimit(userId);
+
+
         if (cache.get(userId) == null) {
-            cache.put(userId, 0L);
+            cache.put(userId, 1L);
         }
+
 
         requestCounter = cache.get(userId);
 
-        if (requestCounter > userRequestLimit) {
+        logger.info("NOW HAVE " + String.valueOf(requestCounter));
+        logger.info("LIMIT IS: " + String.valueOf(userRequestLimit));
+
+        if (requestCounter == userRequestLimit) {
             throw new RequestLimitExceedeException();
         }
         cache.put(userId, ++requestCounter);
     }
 
     public void setUserRequestLimit(String userId) {
-        if (userId.equals(null)) {
-            this.userRequestLimit = userRequestLimitGlobal;
+        if (env.getProperty("rest.limit.user.userId." + userId) == null) {
+            userRequestLimit = userRequestLimitGlobal;
         } else {
-            this.userRequestLimit = 5;
+            this.userRequestLimit = Long.valueOf(env.getProperty("rest.limit.user.userId." + userId));
         }
+
     }
-
-//userRequestLimit = $rest.limit.user.userId; else {userRequestLimit = rest.limit.user.global}
-
 
 }

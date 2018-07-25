@@ -29,7 +29,7 @@ public class TopicController {
     @ApiOperation(value = "Creating new topic")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createTopic(@RequestBody TopicVO topic){
-        requestLimit.assertUserRequestLimit("a");
+        requestLimit.assertUserRequestLimit("123");
         topicService.createTopic(topic);
         logger.debug("Creating new topic: " + topic);
     }
@@ -37,7 +37,7 @@ public class TopicController {
     @ApiOperation(value = "Deleting specific topic based on TopicID")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{topicId}")
     public void deleteTopic(@PathVariable("topicId") long topicId){
-        requestLimit.assertUserRequestLimit("a");
+        requestLimit.assertUserRequestLimit("1234");
         topicService.deleteTopic(topicId);
         logger.debug("Deleting topic with id: " + topicId);
     }
@@ -45,7 +45,7 @@ public class TopicController {
     @ApiOperation(value = "Returning list of topics")
     @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<TopicVO> getAllTopics(@RequestParam (value = "text", required = false) String text, @RequestParam (value = "sortBy", required = false) String sortBy, @RequestParam (value = "sortType", required = false) String sortType){
-        requestLimit.assertUserRequestLimit("a");
+        requestLimit.assertUserRequestLimit("1234");
         return topicService.getAllTopics(text, sortBy, sortType).stream().map(topic -> new TopicVO(topic)).collect(Collectors.toList());
 
     }
