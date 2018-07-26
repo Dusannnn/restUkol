@@ -1,11 +1,11 @@
 package com.aspectworks.active24.api.rest;
 
-import org.ehcache.Cache;
-import org.slf4j.Logger;
+import ch.qos.logback.classic.Logger;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.Element;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component;
 public class RequestLimitImpl {
 
     @Autowired
-    Cache<String, Long> cache;
+    Cache cache;
 
     @Autowired
     private Environment env;
 
-    private static Logger logger = LoggerFactory.getLogger(RequestLimitImpl.class);
+    private static Logger logger = (Logger) LoggerFactory.getLogger(RequestLimitImpl.class);
     private long requestCounter;
     @Value("${rest.limit.user.global}")
     private long userRequestLimitGlobal;
@@ -28,23 +28,27 @@ public class RequestLimitImpl {
     private long userRequestLimit;
 
     public void assertUserRequestLimit(String userId) {
+
         setUserRequestLimit(userId);
 
-
         if (cache.get(userId) == null) {
-            cache.put(userId, 1L);
+            Element element = new Element(userId, 1L);
+            cache.put(element);
         }
 
-
-        requestCounter = cache.get(userId);
-
-        logger.info("NOW HAVE " + String.valueOf(requestCounter));
-        logger.info("LIMIT IS: " + String.valueOf(userRequestLimit));
-
+        Element element = cache.get(userId);
+        String val = String.valueOf(element.getObjectValue());
+        requestCounter = Long.valueOf(val);
         if (requestCounter == userRequestLimit) {
             throw new RequestLimitExceedeException();
         }
-        cache.put(userId, ++requestCounter);
+
+        Element newElement = new Element(userId, ++requestCounter);
+
+        double timeToLiveMs = ((newElement.getCreationTime() + newElement.getTimeToLive() * 1000) - element.getCreationTime());
+        newElement.setTimeToLive((int) Math.ceil((element.getTimeToLive() * 1000 - timeToLiveMs) / 1000));
+        cache.put(newElement);
+
     }
 
     public void setUserRequestLimit(String userId) {
@@ -55,5 +59,4 @@ public class RequestLimitImpl {
         }
 
     }
-
 }

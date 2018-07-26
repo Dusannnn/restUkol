@@ -1,17 +1,14 @@
 package com.aspectworks.active24;
 
-
-import org.ehcache.Cache;
-import org.ehcache.CacheManager;
-import org.ehcache.config.Configuration;
-import org.ehcache.xml.XmlConfiguration;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.slf4j.*;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-
-import static org.ehcache.config.builders.CacheManagerBuilder.newCacheManager;
 
 @SpringBootApplication
 @EnableCaching
@@ -23,13 +20,10 @@ public class Application {
         logger.info("application started");}
 
         @Bean
-        public Cache<String, Long> cache(){
-            Configuration xmlConfig = new XmlConfiguration(Application.class.getResource("/cache/ehcache.xml"));
-            CacheManager cacheManager = newCacheManager(xmlConfig);
-            cacheManager.init();
-            Cache<String, Long> cache = cacheManager.getCache("basicCache", String.class, Long.class);
-            return cache;
+        public Cache cache(){
+        CacheManager cm = CacheManager.newInstance("C:/Users/Dusan.Petren/Desktop/ehcache2/restUkol/active24.api-rest/src/main/resources/cache/ehcache.xml");
+        Cache basicCache = cm.getCache("basicCache");
+        return basicCache;
         }
-
-
 }
+
