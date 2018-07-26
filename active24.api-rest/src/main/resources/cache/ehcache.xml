@@ -3,6 +3,17 @@
          updateCheck="true"
          monitoring="autodetect"
          dynamicConfig="true">
+    <cacheManagerPeerProviderFactory
+            class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+            properties="peerDiscovery=automatic,
+                     multicastGroupAddress=230.0.0.1,
+                     multicastGroupPort=4446,
+                     timeToLive=32"/>
+    <cacheManagerPeerListenerFactory
+            class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
+            properties="hostName=localhost,
+                     port=40001,
+                     socketTimeoutMillis=2000"/>
 
     <diskStore path="java.io.tmpdir" />
 
@@ -14,6 +25,14 @@
            timeToLiveSeconds="60"
            transactionalMode="off">
         <persistence strategy="localTempSwap" />
+        <cacheEventListenerFactory
+                class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+                properties="replicateAsynchronously=true,
+            replicatePuts=true,
+            replicateUpdates=true,
+            replicateUpdatesViaCopy=true,
+            replicateRemovals=true"/>
+    </cache>
     </cache>
 
 </ehcache>
